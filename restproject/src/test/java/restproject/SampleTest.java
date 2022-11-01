@@ -13,7 +13,7 @@ import io.restassured.specification.RequestSpecification;
 
 public class SampleTest {
 
-	@Test
+	//@Test
  public void GetBookDetailsAPI() {
 //	 RestAssured.baseURI="http://demoqa.com/BookStore/v1/Books";
 //	 RequestSpecification httpRequest = RestAssured.given();
