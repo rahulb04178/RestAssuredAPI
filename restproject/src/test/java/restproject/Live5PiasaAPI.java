@@ -2,8 +2,12 @@ package restproject;
 
 import org.hamcrest.Matchers;
 import org.json.simple.JSONObject;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.http.Cookies;
 
 import static io.restassured.RestAssured.*;
 
@@ -12,13 +16,14 @@ import static io.restassured.RestAssured.*;
 public class Live5PiasaAPI {
 	
 	
-	
+   private Cookies cookies;
+   
    @Test
    public void ClientLoginAPI() {
 	   
 	   baseURI = "https://swaraj.5paisa.com/Mob/Service1.svc";
 	   
-	   given()
+	  cookies = given()
 	    .header("UserID","ZyT47UW2g56")
 	    .header("Password","H98qlU4Sn2")
 	    .contentType(ContentType.JSON)
@@ -30,8 +35,8 @@ public class Live5PiasaAPI {
 	   then()
 	    .statusCode(200)
 	    .body("Success", Matchers.equalTo(0))
-	    .log().all();
-	   
+	    .extract().response().getDetailedCookies();	 
+	  
    }
    
    //@Test
@@ -40,11 +45,11 @@ public class Live5PiasaAPI {
 	   baseURI = "https://swaraj.5paisa.com/Mob/Service1.svc";
 	   
 	   given()
+	    .cookies(cookies)
 	    .header("UserID","ZyT47UW2g56")
 	    .header("Password","H98qlU4Sn2")
 	    .contentType(ContentType.JSON)
 	    .accept(ContentType.JSON)
-	    .header("Cookie","5paisacookie=B8C6030205A1BFFCC4078C449491F68A710901B3B950E189CDE37400F5861CFBBD13738F6C886B203FAFA4D568377C79BE07A616ABCA2767626113900B0E21EF9B7F8FC9E9CF3CA968D7D598BA8E6DFC26684CA1790B49F472F6642D4935100049145B1E5068D06876E569A7878E427A27DC00476A608C79006E591DDBFA84E89DB06C5A2B213A7725BED920199030187CF5CFDF_C;JwtToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjUzNDIzMzE3Iiwicm9sZSI6IjEiLCJuYmYiOjE2NjcyMTczODQsImV4cCI6MTY2OTgwOTM4NCwiaWF0IjoxNjY3MjE3Mzg0fQ.I3ANdn9rPM_8-dLV9dE8uGpL8RhIDPzeBUnEqAX50wA")
 	    .body("53423317").
 	   when()
 	    .post("/ClientProfile").
@@ -61,13 +66,6 @@ public class Live5PiasaAPI {
 	   JSONObject request = new JSONObject();
 	   request.put("Email_Id", "LAJRIMNAIK@GMAIL.COM");
 	   
-	   JSONObject head = new JSONObject();
-       head.put("appName", "5PTRADE");
-	   head.put("appVer", "1.0");
-	   head.put("key", "8eeee59bdab88bace6189d001f96487e");
-	   head.put("osName", "Android");
-	   head.put("requestCode", "5PCCSV2");
-	   
 	   baseURI = "https://swaraj.5paisa.com/Mob/Service1.svc";
 	   
 	   given()
@@ -75,7 +73,6 @@ public class Live5PiasaAPI {
 	    .header("Password","H98qlU4Sn2")
 	    .contentType(ContentType.JSON)
 	    .accept(ContentType.JSON)
-	    .header("Cookie","5paisacookie=B8C6030205A1BFFCC4078C449491F68A710901B3B950E189CDE37400F5861CFBBD13738F6C886B203FAFA4D568377C79BE07A616ABCA2767626113900B0E21EF9B7F8FC9E9CF3CA968D7D598BA8E6DFC26684CA1790B49F472F6642D4935100049145B1E5068D06876E569A7878E427A27DC00476A608C79006E591DDBFA84E89DB06C5A2B213A7725BED920199030187CF5CFDF_C;JwtToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjUzNDIzMzE3Iiwicm9sZSI6IjEiLCJuYmYiOjE2NjcyMTczODQsImV4cCI6MTY2OTgwOTM4NCwiaWF0IjoxNjY3MjE3Mzg0fQ.I3ANdn9rPM_8-dLV9dE8uGpL8RhIDPzeBUnEqAX50wA")
 	    .body(request.toJSONString()).
 	   when()
 	    .post("/V2/CheckClientStatus").
